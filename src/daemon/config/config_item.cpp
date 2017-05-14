@@ -1,5 +1,5 @@
 //
-// Created by zhangyutong926 on 10/6/16.
+// update20170512
 //
 #include <string>
 #include <yaml-cpp/yaml.h>
@@ -41,14 +41,14 @@ ProgrammingLanguage *DaemonConfiguration::FindLanguage(int languageId) {
 bool DaemonConfiguration::ReadConfiguration(std::string configFilePath) {
     if (exists(configFilePath + YAML_EXT)) {
         OutputLog("YAML file " + configFilePath + YAML_EXT +
-                  " has been found with first priority. CWOJ will parse it as system configuration.");
+                  " has been found with first priority. OJdaemon will parse it as system configuration.");
         return ParseYaml(configFilePath + YAML_EXT);
     } else if (exists(configFilePath + INI_EXT)) {
         OutputLog("INI file " + configFilePath + INI_EXT +
-                  " has been found with second priority. CWOJ will parse it as system configuration.");
+                  " has been found with second priority. OJdaemon will parse it as system configuration.");
         return ParseIni(configFilePath + INI_EXT);
     } else {
-        OutputLog("Error: No valid configuration file found from given path.");
+        OutputLog("Error: No valid configuration file found from given path."+configFilePath+" check it!");
         return false;
     }
 }
@@ -172,7 +172,7 @@ bool DaemonConfiguration::ParseIni(std::string path) {
     DBUser = string(tmp);
     tmp = ini.Get(std::string("DATABASE_PASS"), std::string(""));
     DBPass = string(tmp);
-    tmp = ini.Get(std::string("DATABASE_NAME"), std::string("cwoj"));
+    tmp = ini.Get(std::string("DATABASE_NAME"), std::string("CDOJ"));
     DBName = string(tmp);
     tmp = ini.Get(std::string("HTTP_BIND_IP"), std::string("0.0.0.0"));
     HttpBindAddr = string(tmp);

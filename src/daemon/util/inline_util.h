@@ -2,8 +2,8 @@
 // Created by zhangyutong926 on 10/25/16.
 //
 
-#ifndef CWOJ_DAEMON_UTIL_H
-#define CWOJ_DAEMON_UTIL_H
+#ifndef OJ_DAEMON_UTIL_H
+#define OJ_DAEMON_UTIL_H
 
 template<typename B, typename T>
 T *FromOffset(B *base, T B:: *offset) {
@@ -13,4 +13,4 @@ T *FromOffset(B *base, T B:: *offset) {
     return reinterpret_cast<T *>(baseInter);
 }
 
-#endif //CWOJ_DAEMON_UTIL_H
+#endif //OJ_DAEMON_UTIL_H

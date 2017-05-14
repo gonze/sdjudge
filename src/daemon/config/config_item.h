@@ -1,11 +1,11 @@
 #ifndef CONF_ITEM_H_
 #define CONF_ITEM_H_
 
-#define CONFIG_FILE_NO_EXT "/etc/cwoj_new"
+#define CONFIG_FILE_NO_EXT "/etc/ojdaemon_new"
 #define INI_EXT ".ini"
 #define YAML_EXT ".yaml"
 #define MAXLANG 100
-#define DEFAULT_RUC "../cwoj_daemon_runner "
+#define DEFAULT_RUC "../oj_daemon_runner "
 
 #include <string>
 #include <vector>

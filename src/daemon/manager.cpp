@@ -38,7 +38,7 @@ namespace std {
 
 #include "judge_daemon.h"
 #include "config/config_item.h"
-#include "log/cwojlog.h"
+#include "log/ojlog.h"
 
 static std::map<std::string, solution *> finder;
 static std::queue<solution *> waiting, removing;
@@ -311,7 +311,7 @@ char *JUDGE_accept_submit(solution *&new_sol) {
 
 //TODO: watchdog
 int main(int argc, char **argv) {
-    printf("CWOJ Judging Service ver %.2f started.\n", build_version);
+    printf("SDOJ Judging Service ver %.2f started.\n", build_version);
 
     //FIXME Here's the test code
     char *temp = new char[MAXPATHLEN];
@@ -334,7 +334,7 @@ int main(int argc, char **argv) {
 #ifdef _WIN32
     int size = GetModuleFileNameA(NULL, target_path, MAXPATHLEN);
     if(size <= 0) {
-        applog("Error: Cannot get program directory, Exit...");
+        applog("Error: Cannot get program directory,1 Exit...");
         exit(1);
     }
     for(int i=size-1; i>=0; i--)
@@ -344,7 +344,7 @@ int main(int argc, char **argv) {
         }
     printf("entering %s\n", target_path);
     if(!SetCurrentDirectory(target_path)) {
-        applog("Error: Cannot enter program directory, Exit...");
+        applog("Error: Cannot enter program directory, 2Exit...");
         exit(1);
     }
 #else
@@ -366,7 +366,8 @@ int main(int argc, char **argv) {
 //		}
     printf("entering %s\n", TargetPath);
     if (0 != chdir(TargetPath)) {
-        OutputLog("Error: Cannot enter program directory, Exit...");
+	printf("please make sure you have the dir:%s\n",TargetPath);
+        OutputLog("Error: Cannot enter program directory, 3Exit...");
         exit(1);
     }
 #endif
@@ -380,12 +381,13 @@ int main(int argc, char **argv) {
     mkdir("temp", 0777);
 #endif
     if (0 != chdir("temp")) {
-        OutputLog("Error: Cannot enter working directory, Exit...");
+	printf("please mkdir->temp dir...\n");
+        OutputLog("Error: Cannot enter working directory, 4Exit...");
         exit(1);
     }
 #ifndef __MINGW32__ //used when run program on *nix only
     if (NULL == getcwd(TargetPath, MAXPATHLEN)) {
-        OutputLog("Error: Cannot get working directory, Exit...");
+        OutputLog("Error: Cannot get working directory, 5Exit...");
         exit(1);
     }
     strcat(TargetPath, "/target.exe");
@@ -399,7 +401,7 @@ int main(int argc, char **argv) {
     std::thread thread_re(thread_rejudge);
 
     if (!StartHttpInterface()) {
-        OutputLog("Error: Cannot open http interface, Exit...");
+        OutputLog("Error: Cannot open http interface,6 Exit...");
         exit(1);
     }
     OutputLog("Started successfully.Waiting for submitting...");

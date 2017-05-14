@@ -9,25 +9,25 @@ aux_source_directory(./sandboxing/ DAEMON_SOURCE_FILES)
 aux_source_directory(./log/ DAEMON_SOURCE_FILES)
 aux_source_directory(./config/ DAEMON_SOURCE_FILES)
 aux_source_directory(./util/ DAEMON_SOURCE_FILES)
-add_executable(cwoj_daemon_daemon ${DAEMON_SOURCE_FILES})
+add_executable(OJdaemon ${DAEMON_SOURCE_FILES})
 
-target_link_libraries(cwoj_daemon_daemon mysqlclient)
-target_link_libraries(cwoj_daemon_daemon microhttpd)
-target_link_libraries(cwoj_daemon_daemon ${Boost_LIBRARIES})
-target_link_libraries(cwoj_daemon_daemon ${CMAKE_THREAD_LIBS_INIT})
-target_link_libraries(cwoj_daemon_daemon yaml-cpp)
-target_link_libraries(cwoj_daemon_daemon seccomp)
+target_link_libraries(OJdaemon mysqlclient)
+target_link_libraries(OJdaemon microhttpd)
+target_link_libraries(OJdaemon ${Boost_LIBRARIES})
+target_link_libraries(OJdaemon ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(OJdaemon yaml-cpp)
+target_link_libraries(OJdaemon seccomp)
 
-install(PROGRAMS ${CMAKE_SOURCE_DIR}/bin/cwoj_daemon_daemon DESTINATION bin)
+install(PROGRAMS ${CMAKE_SOURCE_DIR}/bin/OJdaemon DESTINATION bin)
 
 include("../../ConfigFile.cmake")
 CopyConfigFileIfNotExist(
-        "${CMAKE_SOURCE_DIR}/cwojconfig.ini"
+        "${CMAKE_SOURCE_DIR}/sdojconfig.ini"
         "/etc/cwojconfig.ini"
         "/etc/"
 )
 CopyConfigFileIfNotExist(
-        "${CMAKE_SOURCE_DIR}/cwojdaemon.service"
-        "/lib/systemd/system/cwojdaemon.service"
+        "${CMAKE_SOURCE_DIR}/OJdaemon.service"
+        "/lib/systemd/system/OJdaemon.service"
         "/lib/systemd/system/"
 )

@@ -206,7 +206,9 @@ RunResult TraceChild(int childpid) {
                     if ((x == Seccomp_DisabledSyscall) ||
                         // Calling execvp in sandboxed app is also invalid
                         (codeRun && x == Seccomp_ExecvpSyscall)) {
-                        int scno = ptrace(PTRACE_PEEKUSER, childpid, ORIG_RAX * 8, NULL) + 1;
+                        int scno = ptrace(PTRACE_PEEKUSER, childpid, ORIG_EAX * 4, NULL) + 1;
+			//int scno = ptrace(PTRACE_PEEKUSER, childpid, ORIG_RAX * 8, NULL) + 1;
+			//64bit  RAX,AND   32bit ->EAX
                         if (scno == SCMP_SYS(times) || scno == SCMP_SYS(access))
                         {
                             // TODO: BUG HERE

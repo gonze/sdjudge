@@ -1,9 +1,6 @@
-//
-// Created by zhangyutong926 on 10/24/16.
-//
 
-#ifndef CWOJ_DAEMON_CONF_ITEM_MAP_H
-#define CWOJ_DAEMON_CONF_ITEM_MAP_H
+#ifndef OJ_DAEMON_CONF_ITEM_MAP_H
+#define OJ_DAEMON_CONF_ITEM_MAP_H
 
 #include <map>
 #include <vector>
@@ -236,4 +233,4 @@ std::map<void *, ConfigItemType> ConfigItemMap{
         }
 };
 
-#endif //CWOJ_DAEMON_CONF_ITEM_MAP_H
+#endif //OJ_DAEMON_CONF_ITEM_MAP_H

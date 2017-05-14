@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.6)
-project(cwoj_daemon)
+project(daemon)
 
-message(STATUS "Cwoj Daemon Open Source Project")
+message(STATUS "Daemon Open Source Project")
 message(STATUS "Please notice that this project can only be built and run on *nix OS.")
 
 set(EXECUTABLE_OUTPUT_PATH "${CMAKE_SOURCE_DIR}/bin")
