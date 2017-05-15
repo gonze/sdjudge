@@ -1,7 +1,7 @@
 #ifndef CONF_ITEM_H_
 #define CONF_ITEM_H_
 
-#define CONFIG_FILE_NO_EXT "/etc/ojdaemon_new"
+#define CONFIG_FILE_NO_EXT "/etc/sdojconfig"
 #define INI_EXT ".ini"
 #define YAML_EXT ".yaml"
 #define MAXLANG 100

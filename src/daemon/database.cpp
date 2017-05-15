@@ -19,7 +19,8 @@ namespace std {
 #include <mysql/mysql.h>
 #include "judge_daemon.h"
 #include "config/config_item.h"
-
+#include<iostream>
+using namespace std;
 static std::mutex database_mutex;
 static MYSQL *hMySQL;
 static char statements[65536 * 2]; //escaped compile info becomes longer
@@ -46,8 +47,11 @@ bool InitMySQLConnection() throw() {
             NULL,
             0
     );
-    if (!hMySQL)
-        return false;
+    if (!hMySQL){
+	puts("cant connect mysql.");
+ 	return false;
+    }
+       
     if (mysql_set_character_set(hMySQL, "utf8"))
         return false;
     return true;
@@ -158,28 +162,35 @@ void write_result_to_database(int solution_id, solution *data) throw(const char 
         sprintf(statements, "insert into compileinfo VALUES (%d,'%s')", solution_id, info_escape);
         free(info_escape);
         data->LastState = "";
-        if (mysql_query(hMySQL, statements))
+	
+        if (mysql_query(hMySQL, statements)){
+	  puts("insert compileinfo erro");
             throw "insert compileinfo";
+	}
+
         // if(1 != mysql_affected_rows(hMySQL))
         // 	throw "can't insert compileinfo";
     }
-    puts("insert solution");
+    cout<<"insert solution->";
+
     sprintf(statements,
             "insert into solution (solution_id,problem_id,user_id,time,memory,in_date,result,score,language,valid,code_length,public_code) VALUES "
                     "(%d,%d,'%s',%d,%d,NOW(),%d,%d,%d,%d,%d,%d)", solution_id, data->ProblemFK, data->UserName.c_str(),
             data->TimeLimit, data->MemoryLimit, data->ErrorCode, data->SolutionScore, data->LanguageType,
             (int) (valid && data->ErrorCode == SOLUTION_ACCEPT), code_length, (int) data->IsCodeOpenSourced);
-    if (mysql_query(hMySQL, statements))
+    cout<<statements<<endl;
+if (mysql_query(hMySQL, statements))
         throw "insert solution";
     if (1 != mysql_affected_rows(hMySQL))
         throw "insert solution failed";
 
-    puts("insert source");
+    cout<<"insert source->";
     //printf("code_length %d\n", code_length);
     char *code_escape = (char *) malloc(code_length * 2 + 3);
     mysql_real_escape_string(hMySQL, code_escape, data->SourceCode.c_str(), code_length);
     sprintf(statements, "insert into source_code VALUES (%d,'%s')", solution_id, code_escape);
     free(code_escape);
+	cout<<statements<<endl;
     if (mysql_query(hMySQL, statements))
         throw "insert source";
     if (1 != mysql_affected_rows(hMySQL))
@@ -195,14 +206,16 @@ void write_result_to_database(int solution_id, solution *data) throw(const char 
     // if(1 != mysql_affected_rows(hMySQL))
     // 	throw 1;
 
-    puts("update problem info");
+    cout<<"update problem info->";
     sprintf(statements,
             "update problem set submit=submit+1,accepted=accepted+%d,submit_user=submit_user+%d,solved=solved+%d where problem_id=%d",
             (int) (data->ErrorCode == SOLUTION_ACCEPT),
             (int) (valid && !haveSubmitted(data->ProblemFK, data->UserName.c_str(), solution_id)), is_first_solved,
             data->ProblemFK);
+	cout<<statements<<endl;
     if (mysql_query(hMySQL, statements))
         throw "update problem info";
+
     // if(1 != mysql_affected_rows(hMySQL))
     // 	throw 1;
 }

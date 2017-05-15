@@ -76,17 +76,17 @@ void solution::CloneFrom(const solution &from) throw() {
     TargetPath = from.TargetPath;
 }
 
-const string TargetName("target");
+const string TargetName("target.exe");//主程序中数target.exe保持一直
 const string InputName("user.in");
 const string OutputName("user.out");
 
-bool solution::Compile() throw(const char *) {
+bool solution::Compile() throw(const char *) {//编译
     puts("compile");
-    if (!SystemConf.IsLanguageExists(LanguageType)) {
+    if (!SystemConf.IsLanguageExists(LanguageType)) {//如果找不到语言
         throw "Language doesn't exist";
     }
-    path sourceCodeFile(TargetName);
-    sourceCodeFile = SystemConf.TempDirectory / sourceCodeFile;
+    path sourceCodeFile(TargetName);//定义提交源文件名
+    sourceCodeFile = SystemConf.TempDirectory / sourceCodeFile;//源文件路进
     sourceCodeFile.replace_extension(SystemConf.FindLanguage(LanguageType)->FileExtension);
 
     path targetFile(TargetName);
@@ -106,9 +106,16 @@ bool solution::Compile() throw(const char *) {
     fclose(code_file);*/
 
     remove(targetFile);
+
     path errFile = SystemConf.TempDirectory / "err.out";
-    string command = str(format(SystemConf.FindLanguage(LanguageType)->CompilationExec) % sourceCodeFile % targetFile);
-    command += (format(" >%1% 2>&1 && echo @~good~@ >%1%") % errFile).str();
+//bug20170515
+   
+   string command = str(format(SystemConf.FindLanguage(LanguageType)->CompilationExec)% targetFile % sourceCodeFile );//取编译指令
+	// string command = str(format(SystemConf.FindLanguage(LanguageType)->CompilationExec));
+	//cout<<"sourceCodeFile="<<sourceCodeFile<<endl;
+	//cout<<"targetFile="<<targetFile<<endl;
+   	 command += (format(" >%1% 2>&1 && echo @~good~@ >%1%") % errFile).str();
+
     std::cerr << "Executing " << command << endl;
     system(command.c_str());
 
@@ -120,6 +127,7 @@ bool solution::Compile() throw(const char *) {
     if (!buffer) {
         throw "FAILED to allocate buffer.";
     }
+
     int read_size = fread(buffer, 1, 65400, output);
     buffer[read_size] = '\0';
     fclose(output);
@@ -149,12 +157,13 @@ bool solution::Compile() throw(const char *) {
         }
     }
     remove(errFile);
+
     return true;
 }
 
 void solution::Judge() throw(const char *) {
     // Test Code Start -- Yoto
-    string testOut;
+    string testOut;//
     testOut += "ProblemFK = " + to_string(ProblemFK) + "\n";
     testOut += "ComparisonMode = " + to_string(ComparisonMode) + "\n";
     testOut += "LanguageType = " + to_string(LanguageType) + "\n";

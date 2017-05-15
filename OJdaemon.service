@@ -1,0 +1,12 @@
+[Unit]
+Description=OJdaemon
+After=mysql.service
+
+[Service]
+ExecStart=/usr/local/bin/OJdaemon
+Type=simple
+Restart=always
+
+[Install]
+WantedBy=default.target
+
